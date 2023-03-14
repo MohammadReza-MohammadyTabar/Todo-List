@@ -4,7 +4,7 @@ const getAllTasks = async (req, res) => {
     const allTasks = await tasks.find();
     res.status(200).json(allTasks);
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
   }
 };
 
@@ -23,7 +23,7 @@ const createTask = async (req, res) => {
         res.status(201).json(data);
       });
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
   }
 };
 
@@ -46,16 +46,16 @@ const updateTask = async (req, res) => {
         res.status(204).json(data);
       });
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 const deleteTask = async (req, res) => {
   try {
     const id = req.params.id;
-    await tasks.findByIdAndDelete({ _id: id });
-    res.status(200).send();
+    const task = await tasks.findByIdAndDelete({ _id: id });
+    res.status(200).json(task);
   } catch (error) {
-    res.send(error);
+    res.status(500).send(error);
   }
 };
 module.exports = { getAllTasks, createTask, updateTask, deleteTask };
